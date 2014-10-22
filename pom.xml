@@ -35,7 +35,7 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -224,6 +224,13 @@
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-fluent-api</artifactId>
 			<version>${jaxb2-fluent-version}</version>
+		</dependency>
+
+		<!-- due to NoClassDefFoundError: javax/ws/rs/core/Response -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 		<!-- SLF4J -->

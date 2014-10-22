@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+    <property name="patternValue"
+              value="%date{yyyy-MM-dd HH:mm:ss} - [%-5level] - %msg [%12.-12X{camel.routeId}] [%logger{5}] [%thread] %n"/>
+
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="console">
+        <encoder>
+            <pattern>${patternValue}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../logs/services.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>logs/services.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 200MB -->
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${patternValue}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="at.rovo" level="debug"/>
+    <logger name="org.apache.cxf" level="debug"/>
+    <logger name="org.springframework" level="warn"/>
+    <logger name="org.apache.camel" level="debug"/>
+
+    <root>
+        <level value="info"/>
+       	<appender-ref ref="file"/>
+        <appender-ref ref="console"/>
+    </root>
+
+</configuration>
