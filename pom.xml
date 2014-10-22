@@ -14,9 +14,8 @@
 	<properties>
 		<cxf.version>2.7.10</cxf.version>
 		<camel.version>2.13.0</camel.version>
-		<jaxb.version>2.0.1</jaxb.version>
+		<jaxb.version>2.1</jaxb.version>
 		
-		<jaxb-api.version>2.1</jaxb-api.version>
 		<jaxb2-basics-version>0.9.0</jaxb2-basics-version>
 		<jaxb2-fluent-version>3.0</jaxb2-fluent-version>
 		<janino.version>2.6.1</janino.version>
@@ -212,7 +211,7 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb-api.version}</version>
+			<version>${jaxb.version}</version>
 		</dependency>
 
 		<!-- org.jvnet.jaxb2_commons -->
