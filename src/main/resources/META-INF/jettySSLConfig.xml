@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:cxfcore="http://cxf.apache.org/core"
+	xmlns:sec="http://cxf.apache.org/configuration/security" xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+       http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+       http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+       ">
+	<httpj:engine-factory bus="cxf">
+		<httpj:engine port="8081">
+			<httpj:tlsServerParameters>
+				<sec:keyManagers keyPassword="jettyPW">
+					<sec:keyStore file="src/main/resources/security/serverKey.jks"
+						password="keystorePW" type="JKS" />
+				</sec:keyManagers>
+				<sec:trustManagers>
+					<sec:keyStore file="src/main/resources/security/serverKey.jks"
+						password="keystorePW" type="JKS" />
+				</sec:trustManagers>
+				<sec:cipherSuitesFilter>
+					<sec:include>.*_WITH_3DES_.*</sec:include>
+					<sec:include>.*_WITH_DES_.*</sec:include>
+					<sec:exclude>.*_WITH_NULL_.*</sec:exclude>
+					<sec:exclude>.*_DH_anon_.*</sec:exclude>
+				</sec:cipherSuitesFilter>
+				<sec:clientAuthentication want="false"
+					required="false" />
+			</httpj:tlsServerParameters>
+		</httpj:engine>
+	</httpj:engine-factory>
+</beans>

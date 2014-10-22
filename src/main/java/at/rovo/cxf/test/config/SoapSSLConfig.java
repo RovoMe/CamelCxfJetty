@@ -28,7 +28,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@ImportResource({"classpath:META-INF/cxf/cxf.xml"})
+@ImportResource({"classpath:META-INF/cxf/cxf.xml", 
+	"classpath:META-INF/jettySSLConfig.xml"})
 public class SoapSSLConfig
 {
 	public final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -43,7 +44,7 @@ public class SoapSSLConfig
 	 * @return The factory which creates a Jetty server configured with HTTPS
 	 * @throws Exception
 	 */
-	@Bean(name = "jettySSLEngineFactory")
+//	@Bean(name = "jettySSLEngineFactory")
     public JettyHTTPServerEngineFactory jettyEngine() throws Exception {
 		// JettyDestinationFactory gets injected, 
 		// JettyHTTPServerEngineFactory however not :(
