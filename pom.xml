@@ -15,7 +15,7 @@
 		<cxf.version>2.7.10</cxf.version>
 		<camel.version>2.13.0</camel.version>
 		<jaxb.version>2.1</jaxb.version>
-		
+
 		<jaxb2-basics-version>0.9.0</jaxb2-basics-version>
 		<jaxb2-fluent-version>3.0</jaxb2-fluent-version>
 		<janino.version>2.6.1</janino.version>
@@ -35,7 +35,7 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -150,7 +150,7 @@
 			<artifactId>cxf-api</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-core</artifactId>
 			<version>${cxf.version}</version>
@@ -224,6 +224,13 @@
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-fluent-api</artifactId>
 			<version>${jaxb2-fluent-version}</version>
+		</dependency>
+
+		<!-- due to NoClassDefFoundError: javax/ws/rs/core/Response -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 		<!-- SLF4J -->
