@@ -2,19 +2,24 @@ package at.rovo.cxf.test.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+
 import javax.annotation.Resource;
 import javax.net.ssl.KeyManagerFactory;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.configuration.jsse.TLSServerParameters;
 import org.apache.cxf.configuration.security.ClientAuthentication;
 import org.apache.cxf.configuration.security.FiltersType;
 import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -24,6 +29,7 @@ import org.springframework.core.env.Environment;
 @ImportResource({"classpath:META-INF/cxf/cxf.xml"})
 public class SoapSSLConfig
 {
+	public final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	@Resource
 	protected Environment env;
 	@Resource(name = "cxf")
@@ -37,6 +43,8 @@ public class SoapSSLConfig
 	 */
 	@Bean(name = "jettySSLEngineFactory")
 	public JettyHTTPServerEngineFactory jettyEngine() throws Exception {
+		// JettyDestinationFactory gets injected, 
+		// JettyHTTPServerEngineFactory however not :(
 		JettyHTTPServerEngineFactory factory = new JettyHTTPServerEngineFactory();
 		factory.setBus(bus);
 		
@@ -67,7 +75,7 @@ public class SoapSSLConfig
 		
 		return factory;
 	}
-
+	
 	/**
 	 * Configures a TLS configuration for a Jetty server.
 	 * 
