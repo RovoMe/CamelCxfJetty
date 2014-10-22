@@ -11,6 +11,8 @@ import java.security.cert.CertificateException;
 
 import javax.annotation.Resource;
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.bus.spring.SpringBus;
@@ -42,40 +44,40 @@ public class SoapSSLConfig
 	 * @throws Exception
 	 */
 	@Bean(name = "jettySSLEngineFactory")
-	public JettyHTTPServerEngineFactory jettyEngine() throws Exception {
+    public JettyHTTPServerEngineFactory jettyEngine() throws Exception {
 		// JettyDestinationFactory gets injected, 
 		// JettyHTTPServerEngineFactory however not :(
-		JettyHTTPServerEngineFactory factory = new JettyHTTPServerEngineFactory();
-		factory.setBus(bus);
-		
-		int port = 81;
-		TLSServerParameters serverParameters = tlsParameters();
-		try
-		{
-			String path = env.getProperty("services.path.ssl");
-			if (StringUtils.isNotBlank(path) 
-					&& path.contains(":") 
-					&& path.lastIndexOf(":") +1 <= path.length()) {
-				String sPort = path.substring(path.lastIndexOf(":") + 1);
-				if (sPort.contains("/")) 
-				{
-					sPort = sPort.substring(0, sPort.indexOf("/"));
-				}
-				port = Integer.parseInt(sPort);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally 
-		{
-			factory.setTLSServerParametersForPort(port, serverParameters);
-		}
-		
-		return factory;
-	}
-	
+		LOG.info("Configuring Jetty for SSL secured connections");
+        JettyHTTPServerEngineFactory factory = new JettyHTTPServerEngineFactory();
+        factory.setBus(bus);
+        
+        int port = 8081;
+        TLSServerParameters serverParameters = tlsParameters();
+        try {
+            String path = env.getProperty("services.address.ssl");
+            LOG.debug("Jetty-SSL path: {}", path);
+            if (StringUtils.isNotBlank(path) 
+            		&& path.contains(":") 
+            		&& path.lastIndexOf(":")+1 <= path.length() ) {
+            	LOG.info("Trying to initialize SSL secured Jetty server: {}",
+            			path);
+                String sPort = path.substring(path.lastIndexOf(":")+1);
+                if (sPort.contains("/")) {
+                    sPort = sPort.substring(0, sPort.indexOf("/"));
+                }
+                port = Integer.parseInt(sPort);
+            }
+        }
+        catch (Exception e) {
+        	LOG.error(e.getLocalizedMessage(), e);
+        }
+        finally {
+            factory.setTLSServerParametersForPort(port, serverParameters);
+        }
+                
+        return factory;
+    }
+
 	/**
 	 * Configures a TLS configuration for a Jetty server.
 	 * 
@@ -86,17 +88,22 @@ public class SoapSSLConfig
 	 * @throws CertificateException
 	 * @throws UnrecoverableKeyException
 	 */
-	public TLSServerParameters tlsParameters() throws IOException, NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException 
-	{
-		TLSServerParameters tlsParameters = new TLSServerParameters();
-		ClientAuthentication clientAuth = new ClientAuthentication();
-		clientAuth.setRequired(false);
-		clientAuth.setWant(false);
-		tlsParameters.setClientAuthentication(clientAuth);
-		tlsParameters.setSecureSocketProtocol("SSL");
+	public TLSServerParameters tlsParameters() throws IOException, NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException {
 		
-		KeyManagerFactory keyManagerFactory =
-				KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+		TLSServerParameters tlsParameters = new TLSServerParameters();
+        ClientAuthentication clientAuth = new ClientAuthentication();
+        clientAuth.setRequired(false);
+        clientAuth.setWant(false);
+		tlsParameters.setClientAuthentication(clientAuth);
+        tlsParameters.setSecureSocketProtocol("SSL");
+		
+		TrustManagerFactory trustmanagerfactory = 
+			     TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		trustmanagerfactory.init(sslKeystore());
+		TrustManager[] mgrs = trustmanagerfactory.getTrustManagers();
+		tlsParameters.setTrustManagers(mgrs);
+		
+		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 		keyManagerFactory.init(sslKeystore(), env.getProperty("ssl.key.password").toCharArray());
 		tlsParameters.setKeyManagers(keyManagerFactory.getKeyManagers());
 		
@@ -112,19 +119,19 @@ public class SoapSSLConfig
 		 */
 		
 		// set all the needed include & exclude cipher filters
-		FiltersType filters = new FiltersType();
-		filters.getInclude().add(".*_EXPORT_.*");
-		filters.getInclude().add(".*_EXPORT1024_.*");
-		filters.getInclude().add(".*_WITH_3DES_.*");
-		filters.getInclude().add(".*_WITH_DES_.*");
-		filters.getInclude().add(".*_WITH_NULL_.*");
+        FiltersType filters = new FiltersType();
+        filters.getInclude().add(".*_EXPORT_.*");
+        filters.getInclude().add(".*_EXPORT1024_.*");
+        filters.getInclude().add(".*_WITH_3DES_.*");
+        filters.getInclude().add(".*_WITH_DES_.*");
+        filters.getInclude().add(".*_WITH_NULL_.*");
 		filters.getInclude().add(".*_WITH_AES_.*");
-		filters.getExclude().add(".*_DH_anon_.*");
+        filters.getExclude().add(".*_DH_anon_.*");
 		tlsParameters.setCipherSuitesFilter(filters);
 		
 		return tlsParameters;
 	}
-	
+
 	/**
 	 * Configures the keystore to use for SSL secured connections.
 	 * 
@@ -134,8 +141,7 @@ public class SoapSSLConfig
 	 * @throws CertificateException
 	 * @throws IOException
 	 */
-	public KeyStore sslKeystore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
-	{
+	public KeyStore sslKeystore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
 		InputStream in = this.getClass().getResourceAsStream(env.getProperty("ssl.keyStore.resource"));
 		KeyStore ks = KeyStore.getInstance("JKS");
 		ks.load(in, env.getProperty("ssl.keyStore.password").toCharArray());
