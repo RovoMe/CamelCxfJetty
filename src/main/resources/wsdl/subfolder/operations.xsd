@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://serviceoperations.namespace" 
+	xmlns:tns="http://serviceoperations.namespace"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:failure="http://failure.namespace"
+	xmlns:acks="http://acknowledgement.namespace"
+	elementFormDefault="qualified" 
+	attributeFormDefault="qualified">
+	
+	<xs:import namespace="http://failure.namespace" schemaLocation="failure.xsd" />
+	<xs:import namespace="http://acknowledgement.namespace" schemaLocation="acknowledgement.xsd" />
+	
+	<xs:element name="Endpoint1_Operation1_Request" type="tns:Endpoint1_Operation1_RequestType" />
+	<xs:element name="Endpoint1_Operation2_Request" type="tns:Endpoint1_Operation2_RequestType" />
+	<xs:element name="Endpoint1_Operation2_Response" type="tns:Endpoint1_Operation2_ResponseType" />
+	
+	<xs:element name="Endpoint2_Operation_Request" type="tns:Endpoint2_Operation_RequestType" />
+	<xs:element name="Endpoint2_Operation_Response" type="tns:Endpoint2_Operation_ResponseType" />
+	
+	<xs:complexType name="SomeResponseType">
+		<xs:sequence>
+			<xs:element name="MessageId" type="xs:string" />
+			<xs:element name="Message" type="xs:string" />
+			<xs:element name="Failure" type="failure:FailureType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType> 
+	
+	<xs:complexType name="AbstractRequestType" abstract="true">
+		<xs:sequence>
+			<xs:element name="RequestMetaData">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppKey" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Endpoint1_Operation1_RequestType">
+		<xs:complexContent>
+			<xs:extension base="tns:AbstractRequestType">
+				<xs:sequence>
+					<xs:element name="param1" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="Endpoint1_Operation2_RequestType">
+		<xs:complexContent>
+			<xs:extension base="tns:AbstractRequestType">
+				<xs:sequence>
+					<xs:element name="param1" type="xs:string" />
+					<xs:element name="param2" type="xs:int" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="Endpoint1_Operation2_ResponseType">
+		<xs:sequence>
+			<xs:element name="response" type="tns:SomeResponseType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Endpoint2_Operation_RequestType">
+		<xs:complexContent>
+			<xs:extension base="tns:AbstractRequestType">
+				<xs:sequence>
+					<xs:element name="param1" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="Endpoint2_Operation_ResponseType">
+		<xs:sequence>
+			<xs:element name="ep2Response" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema> 

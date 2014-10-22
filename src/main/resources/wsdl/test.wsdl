@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:service="http://serviceoperations.namespace" 
+	xmlns:tns="http://serviceoperations.namespace"
+	xmlns:acks="http://acknowledgement.namespace" 
+	xmlns:failure="http://failure.namespace"
+	targetNamespace="http://serviceoperations.namespace">
+		
+	<!-- ========================== Type Definitions ======================= -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://serviceoperations.namespace" schemaLocation="subfolder/operations.xsd" />
+			<xs:import namespace="http://acknowledgement.namespace" schemaLocation="subfolder/acknowledgement.xsd" />
+			<xs:import namespace="http://failure.namespace" schemaLocation="subfolder/failure.xsd" />
+		</xs:schema>
+	</wsdl:types>
+	
+	<!-- =================== Message Endpoint 1 definition ==================-->
+	<wsdl:message name="endpoint1_operation1_request">
+		<wsdl:part name="in" element="service:Endpoint1_Operation1_Request" />
+	</wsdl:message>
+	<wsdl:message name="endpoint1_operation1_response">
+		<wsdl:part name="out" element="acks:Acknowledgement" />
+	</wsdl:message>
+	
+	<wsdl:message name="endpoint1_operation2_request">
+		<wsdl:part name="in" element="service:Endpoint1_Operation2_Request" />
+	</wsdl:message>
+	<wsdl:message name="endpoint1_operation2_response">
+		<wsdl:part name="out" element="service:Endpoint1_Operation2_Response" />
+	</wsdl:message>
+	
+	<!-- =================== Message Endpoint 2 definition ==================-->
+	<wsdl:message name="endpoint2_request">
+		<wsdl:part name="in" element="service:Endpoint2_Operation_Request" />
+	</wsdl:message>
+	<wsdl:message name="endpoint2_response">
+		<wsdl:part name="out" element="service:Endpoint2_Operation_Response" />
+	</wsdl:message>
+	
+	<wsdl:message name="OperationFault">
+		<wsdl:part name="failure" element="failure:Failure" />
+	</wsdl:message>
+	
+	<!-- ======================== Endpoint definition =======================-->
+	<wsdl:portType name="Endpoint1_Endpoint">
+		<wsdl:operation name="endpoint1_operation1">
+			<wsdl:input message="tns:endpoint1_operation1_request" />
+			<wsdl:output message="tns:endpoint1_operation1_response" />
+			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
+		</wsdl:operation>
+		<wsdl:operation name="endpoint1_operation2">
+			<wsdl:input message="tns:endpoint1_operation2_request" />
+			<wsdl:output message="tns:endpoint1_operation2_response" />
+			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:portType name="Endpoint2_Endpoint">
+		<wsdl:operation name="endpoint2_operation">
+			<wsdl:input message="tns:endpoint2_request" />
+			<wsdl:output message="tns:endpoint2_response" />
+			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<!--=========================== Bindings =============================== -->
+	<wsdl:binding name="Endpoint1_Binding" type="tns:Endpoint1_Endpoint">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="endpoint1_operation1">
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation1" style="document" />
+			<wsdl:input>
+				<soap:body parts="in" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="out" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="OperationFault">
+				<soap:fault name="OperationFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="endpoint1_operation2">
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation2" style="document" />
+			<wsdl:input>
+				<soap:body parts="in" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="out" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="OperationFault">
+				<soap:fault name="OperationFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:binding name="Endpoint2_Binding" type="tns:Endpoint2_Endpoint">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="endpoint2_operation">
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing2Operation" style="document" />
+			<wsdl:input>
+				<soap:body parts="in" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="out" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="OperationFault">
+				<soap:fault name="OperationFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<!-- ======================= Service delclarations ===================== -->
+	<wsdl:service name="Endpoint1_Service">
+		<wsdl:port name="Endpoint1ServicePort" binding="tns:Endpoint1_Binding">
+			<soap:address location="http://localhost:8080/endpoint1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	<wsdl:service name="Endpoint2_Service">
+		<wsdl:port name="Endpoint2ServicePort" binding="tns:Endpoint2_Binding">
+			<soap:address location="http://localhost:8080/endpoint2" />
+		</wsdl:port>
+	</wsdl:service>	
+	
+</wsdl:definitions>

@@ -1,0 +1,9 @@
+<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	jaxb:extensionBindingPrefixes="xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance">
+	<jaxb:globalBindings typesafeEnumMaxMembers="1000">
+		<xjc:simple />
+		<jaxb:serializable />
+	</jaxb:globalBindings>
+</jaxb:bindings>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://acknowledgement.namespace"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:acks="http://acknowledgement.namespace"  
+	elementFormDefault="qualified" 
+	attributeFormDefault="qualified">
+
+	<xs:element name="Acknowledgement" type="acks:AcknowledgementType" />
+	
+	<xs:element name="Details" type="xs:string" />
+	<xs:attribute name="Timestamp" type="xs:dateTime" />
+	
+	<xs:complexType name="AcknowledgementType">
+		<xs:sequence>
+			<xs:element ref="acks:Details" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute ref="acks:Timestamp" use="required" />
+	</xs:complexType>
+	
+</xs:schema>

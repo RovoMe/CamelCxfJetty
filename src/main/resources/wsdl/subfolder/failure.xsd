@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	targetNamespace="http://failure.namespace"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:failure="http://failure.namespace"
+	elementFormDefault="qualified" 
+	attributeFormDefault="qualified">
+	
+	<xs:element name="Failure" type="failure:FailureType" />
+	
+	<xs:complexType name="FailureType">
+		<xs:sequence>
+			<xs:element name="Code" type="xs:int" />
+			<xs:element name="Reason" type="xs:string" />
+			<xs:element name="Detail" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>
