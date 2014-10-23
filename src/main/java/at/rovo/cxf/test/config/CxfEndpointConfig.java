@@ -14,6 +14,7 @@ import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.Environment;
 
@@ -22,7 +23,8 @@ import at.rovo.cxf.test.EnhancedEndpoint2Endpoint;
 
 @Configuration
 @ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
-public class CxfEndpointConfig extends SoapSSLConfig
+@Import(SoapSSLConfig.class)
+public class CxfEndpointConfig 
 {
 	@Resource
 	protected Environment env;
