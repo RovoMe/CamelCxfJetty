@@ -72,7 +72,7 @@
 	<wsdl:binding name="Endpoint1_Binding" type="tns:Endpoint1_Endpoint">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="endpoint1_operation1">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation1" style="document" />
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint1Operation1" style="document" />
 			<wsdl:input>
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
@@ -84,7 +84,7 @@
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="endpoint1_operation2">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation2" style="document" />
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint1Operation2" style="document" />
 			<wsdl:input>
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
@@ -100,7 +100,7 @@
 	<wsdl:binding name="Endpoint2_Binding" type="tns:Endpoint2_Endpoint">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="endpoint2_operation">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing2Operation" style="document" />
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint2Operation" style="document" />
 			<wsdl:input>
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
