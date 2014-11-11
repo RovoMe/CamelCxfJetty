@@ -9,7 +9,7 @@ import org.apache.cxf.annotations.FastInfoset;
 import org.apache.cxf.annotations.GZIP;
 import org.apache.cxf.annotations.SchemaValidation;
 
-@WebService(targetNamespace = "http://serviceoperations.namespace", name = "Endpoint2")
+@WebService(targetNamespace = "http://serviceoperations.namespace", name = "Endpoint2_Endpoint")
 @FastInfoset
 @SchemaValidation
 @GZIP(threshold = 500)

@@ -49,21 +49,21 @@
 	<!-- ======================== Endpoint definition =======================-->
 	<wsdl:portType name="Endpoint1_Endpoint">
 		<wsdl:operation name="endpoint1_operation1">
-			<wsdl:input message="tns:endpoint1_operation1_request" />
-			<wsdl:output message="tns:endpoint1_operation1_response" />
+			<wsdl:input name="inOperation1" message="tns:endpoint1_operation1_request" />
+			<wsdl:output name="outOperation1" message="tns:endpoint1_operation1_response" />
 			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
 		</wsdl:operation>
 		<wsdl:operation name="endpoint1_operation2">
-			<wsdl:input message="tns:endpoint1_operation2_request" />
-			<wsdl:output message="tns:endpoint1_operation2_response" />
+			<wsdl:input name="inOperation2" message="tns:endpoint1_operation2_request" />
+			<wsdl:output name="outOperation2" message="tns:endpoint1_operation2_response" />
 			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
 	<wsdl:portType name="Endpoint2_Endpoint">
 		<wsdl:operation name="endpoint2_operation">
-			<wsdl:input message="tns:endpoint2_request" />
-			<wsdl:output message="tns:endpoint2_response" />
+			<wsdl:input name="inOperation" message="tns:endpoint2_request" />
+			<wsdl:output name="outOperation" message="tns:endpoint2_response" />
 			<wsdl:fault name="OperationFault" message="tns:OperationFault" />
 		</wsdl:operation>
 	</wsdl:portType>
@@ -72,11 +72,11 @@
 	<wsdl:binding name="Endpoint1_Binding" type="tns:Endpoint1_Endpoint">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="endpoint1_operation1">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation1" style="document" />
-			<wsdl:input>
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint1Operation1" style="document" />
+			<wsdl:input name="inOperation1">
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
-			<wsdl:output>
+			<wsdl:output name="outOperation1">
 				<soap:body parts="out" use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="OperationFault">
@@ -84,11 +84,11 @@
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="endpoint1_operation2">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing1Operation2" style="document" />
-			<wsdl:input>
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint1Operation2" style="document" />
+			<wsdl:input name="inOperation2">
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
-			<wsdl:output>
+			<wsdl:output name="outOperation2">
 				<soap:body parts="out" use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="OperationFault">
@@ -100,11 +100,11 @@
 	<wsdl:binding name="Endpoint2_Binding" type="tns:Endpoint2_Endpoint">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="endpoint2_operation">
-			<soap:operation soapAction="http://serviceoperations.namespace/Endpoing2Operation" style="document" />
-			<wsdl:input>
+			<soap:operation soapAction="http://serviceoperations.namespace/Endpoint2Operation" style="document" />
+			<wsdl:input name="inOperation">
 				<soap:body parts="in" use="literal" />
 			</wsdl:input>
-			<wsdl:output>
+			<wsdl:output name="outOperation">
 				<soap:body parts="out" use="literal" />
 			</wsdl:output>
 			<wsdl:fault name="OperationFault">
